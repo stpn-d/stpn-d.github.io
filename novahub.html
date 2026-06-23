@@ -5,188 +5,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#f5f5f7">
-    
     <title>NovaHub</title>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007aff'/><text x='50%' y='50%' font-size='50' font-family='system-ui, sans-serif' font-weight='bold' fill='white' dominant-baseline='central' text-anchor='middle'>N</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007aff'/><text x='50%' y='50%' font-size='50' font-family='system-ui, sans-serif' font-weight='bold' fill='white' dominant-baseline='central' text-anchor='middle'>N</text></svg>">
+    <!-- Base64 zakódované SVG pro 100% spolehlivost v iOS Safari -->
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMDA3YWZmIi8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OPC90ZXh0Pjwvc3ZnPg==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMDA3YWZmIi8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OPC90ZXh0Pjwvc3ZnPg==">
 
     <style>
+        /* iOS 26 Design System */
         :root {
-            --bg-color: #f5f5f7;
-            --text-color: #1d1d1f;
-            --accent-color: #007aff;
-            --card-bg: #ffffff;
-            --danger: #ff3b30;
-            --nav-bg: rgba(255, 255, 255, 0.75);
+            /* Light Mode */
+            --bg-color: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --text-primary: #000000;
+            --text-secondary: #8E8E93;
+            --tint-color: #007AFF;
+            --tint-glow: rgba(0, 122, 255, 0.4);
+            --separator: rgba(60, 60, 67, 0.1);
+            --danger: #FF3B30;
+            
+            /* Bottom Nav */
+            --nav-bg: rgba(255, 255, 255, 0.85);
+            --nav-active-bg: rgba(0, 0, 0, 0.08); /* Pozadí aktivního tlačítka v menu */
+            --nav-border: rgba(0, 0, 0, 0.05);
+            --input-bg: rgba(118, 118, 128, 0.08);
+            
+            --radius-card: 28px;
+            --radius-pill: 100px;
         }
 
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode */
+                --bg-color: #000000;
+                --card-bg: #1C1C1E;
+                --text-primary: #FFFFFF;
+                --text-secondary: #98989D;
+                --tint-color: #0A84FF;
+                --tint-glow: rgba(10, 132, 255, 0.5);
+                --separator: rgba(84, 84, 88, 0.3);
+                --danger: #FF453A;
+                
+                --nav-bg: rgba(28, 28, 30, 0.85);
+                --nav-active-bg: rgba(255, 255, 255, 0.15); /* Pozadí aktivního tlačítka v dark modu */
+                --nav-border: rgba(255, 255, 255, 0.05);
+                --input-bg: rgba(255, 255, 255, 0.08);
+            }
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
             background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-primary);
             margin: 0;
-            /* Podpora pro notch nahoře, dole už bez safe-area pro iOS 26 */
-            padding: max(20px, env(safe-area-inset-top)) 20px 90px; 
+            padding: max(20px, env(safe-area-inset-top)) 20px 140px;
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-        }
+        .container { max-width: 500px; margin: 0 auto; }
 
         h1 {
-            font-size: 34px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            letter-spacing: -0.8px;
+            font-size: 34px; font-weight: 800;
+            letter-spacing: 0.3px; margin: 10px 0 24px;
         }
 
-        /* Taby / Sekce */
-        .tab-content {
-            display: none;
-            animation: fadeScale 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        .date-subtitle {
+            font-size: 14px; color: var(--text-secondary);
+            text-transform: uppercase; font-weight: 600;
+            letter-spacing: 0.5px; margin-bottom: 4px;
         }
 
-        .tab-content.active {
-            display: block;
+        .section-header {
+            font-size: 15px; color: var(--text-secondary);
+            margin: 32px 16px 12px; font-weight: 600;
         }
 
-        @keyframes fadeScale {
-            from { opacity: 0; transform: scale(0.98) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        .tab-content { display: none; animation: blurFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .tab-content.active { display: block; }
+
+        @keyframes blurFadeIn {
+            from { opacity: 0; filter: blur(4px); transform: translateY(15px) scale(0.98); }
+            to { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
         }
 
-        /* Společné prvky pro vstupy */
-        input[type="text"], input[type="number"], textarea {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 18px;
-            border: none;
-            border-radius: 18px;
-            font-size: 17px;
-            margin-bottom: 20px;
+        /* Karty */
+        ul.inset-grouped {
             background: var(--card-bg);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
-            outline: none;
-            font-family: inherit;
-            transition: box-shadow 0.2s ease;
+            border-radius: var(--radius-card);
+            margin: 0 0 20px 0; padding: 6px;
+            list-style: none;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
         }
 
-        input:focus, textarea:focus {
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.15);
+        ul.inset-grouped li {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px; border-radius: 22px;
+            margin-bottom: 2px;
+            transition: background-color 0.2s ease;
         }
+
+        ul.inset-grouped li:last-child { margin-bottom: 0; }
+        ul.inset-grouped li.clickable { cursor: pointer; }
+        ul.inset-grouped li.clickable:active { background-color: var(--input-bg); }
+
+        .list-input {
+            width: 100%; border: none; background: transparent;
+            font-size: 17px; color: var(--text-primary);
+            outline: none; font-family: inherit;
+        }
+        .list-input::placeholder { color: var(--text-secondary); }
 
         textarea {
-            height: 350px;
-            resize: none;
-            line-height: 1.5;
+            width: 100%; height: 160px; padding: 20px;
+            border: none; border-radius: var(--radius-card);
+            font-size: 17px; background: var(--card-bg);
+            color: var(--text-primary); outline: none;
+            font-family: inherit; resize: none; line-height: 1.5;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
         }
 
-        /* Seznamy */
-        ul { list-style: none; padding: 0; margin: 0; }
-        
-        li {
-            display: flex;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 18px;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.1s ease;
+        .widget-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
         }
+        .widget {
+            background: var(--card-bg); border-radius: var(--radius-card);
+            padding: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .widget-title { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+        .widget-value { font-size: 24px; font-weight: 800; color: var(--text-primary); }
+        .widget-value.blue { color: var(--tint-color); }
 
-        li:active { transform: scale(0.98); }
-        li.packed { opacity: 0.4; }
-        li.packed .item-text { text-decoration: line-through; }
+        .mood-container {
+            display: flex; justify-content: space-between; padding: 10px;
+            background: var(--input-bg); border-radius: var(--radius-pill);
+        }
+        .mood-btn {
+            background: transparent; border: none; font-size: 28px;
+            padding: 8px; border-radius: 50%; cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .mood-btn.active { background: var(--card-bg); transform: scale(1.15); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
+        /* Checkboxy */
         .checkbox {
-            width: 24px; height: 24px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
-            margin-right: 16px;
-            flex-shrink: 0;
-            transition: all 0.2s ease;
+            width: 26px; height: 26px;
+            border: 2px solid var(--separator);
+            border-radius: 50%; margin-right: 16px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         li.packed .checkbox { 
-            background: var(--accent-color); 
-            border-color: var(--accent-color);
+            background: var(--tint-color); border-color: var(--tint-color);
+            box-shadow: 0 0 12px var(--tint-glow);
+        }
+        li.packed .checkbox::after {
+            content: ''; width: 6px; height: 12px;
+            border: solid white; border-width: 0 2.5px 2.5px 0;
+            transform: rotate(45deg); margin-bottom: 2px;
         }
 
-        .item-text { font-size: 17px; flex-grow: 1; font-weight: 500; }
-        
-        .expense-amount {
-            font-weight: 700;
-            color: var(--danger);
-            margin-right: 12px;
+        .item-text { font-size: 17px; font-weight: 500; color: var(--text-primary); transition: color 0.2s; }
+        li.packed .item-text { color: var(--text-secondary); text-decoration: line-through; }
+
+        .action-btn {
+            background: var(--tint-color); color: white;
+            border: none; border-radius: var(--radius-pill);
+            padding: 16px; font-size: 17px; font-weight: 600;
+            width: 100%; cursor: pointer; margin-bottom: 20px;
+            box-shadow: 0 8px 20px var(--tint-glow);
         }
+        .action-btn:active { transform: scale(0.96); }
 
         .delete-btn {
-            color: #c7c7cc;
-            font-weight: 600;
-            background: none;
-            border: none;
-            padding: 8px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        
-        .delete-btn:hover { color: var(--danger); }
-
-        .total-box {
-            background: linear-gradient(135deg, #007aff, #005bb5);
-            color: white;
-            padding: 20px;
-            border-radius: 18px;
-            font-size: 22px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
+            color: var(--card-bg); background: var(--danger); border: none;
+            padding: 8px 16px; border-radius: var(--radius-pill);
+            font-size: 14px; font-weight: 600; cursor: pointer;
         }
 
-        /* Spodní navigace - bez home bar spacingu pro iOS 26 */
+        /* --- SPODNÍ MENU (Podle tvého screenshotu image_34623c.png) --- */
+        .bottom-nav-container {
+            position: fixed; bottom: 32px; left: 0; right: 0;
+            display: flex; justify-content: center; z-index: 100;
+            pointer-events: none;
+        }
+
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            pointer-events: auto;
             background: var(--nav-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            display: flex;
-            justify-content: space-around;
-            padding: 16px 20px;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            z-index: 100;
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            display: flex; align-items: center; justify-content: center;
+            padding: 8px 12px; gap: 8px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15), 0 0 0 0.5px var(--nav-border);
         }
 
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #8e8e93;
-            font-size: 12px;
-            font-weight: 600;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 72px; height: 64px;
+            border-radius: 32px; /* Dělá z aktivního pozadí krásný kruh/oválek obalující vše */
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            transition: color 0.2s ease;
+            color: var(--text-primary);
+            transition: background 0.3s ease;
         }
 
-        .nav-item.active { color: var(--accent-color); }
-        .nav-icon { font-size: 24px; margin-bottom: 4px; filter: grayscale(100%); opacity: 0.6; transition: all 0.2s ease; }
-        .nav-item.active .nav-icon { filter: grayscale(0%); opacity: 1; transform: translateY(-2px); }
+        /* Text uvnitř tlačítka */
+        .nav-text {
+            font-size: 11px; font-weight: 600;
+            margin-top: 4px;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
 
-        /* Expense Input Row */
-        .expense-inputs { display: flex; gap: 12px; }
-        .expense-inputs input[type="text"] { flex-grow: 1; }
-        .expense-inputs input[type="number"] { width: 110px; }
+        /* Když je tlačítko aktivní */
+        .nav-item.active {
+            background: var(--nav-active-bg);
+        }
+        .nav-item.active .nav-text {
+            color: var(--tint-color);
+        }
+
+        /* Systém obrysových (outline) a vyplněných (solid) ikon */
+        .nav-icon { width: 24px; height: 24px; }
+        
+        .nav-icon.solid { display: none; fill: var(--tint-color); }
+        .nav-icon.outline { display: block; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        /* Přepnutí ikony na plnou při aktivaci */
+        .nav-item.active .nav-icon.outline { display: none; }
+        .nav-item.active .nav-icon.solid { display: block; }
 
     </style>
 </head>
@@ -194,148 +244,288 @@
 
     <div class="container">
         
-        <div id="tab-tasks" class="tab-content active">
-            <h1>Seznam 🧳</h1>
-            <input type="text" id="taskInput" placeholder="Co přidáme?" onkeypress="handleTaskPress(event)">
-            <ul id="taskList"></ul>
-        </div>
+        <!-- MODULE 1: PŘEHLED (HOME) -->
+        <div id="tab-home" class="tab-content active">
+            <div class="date-subtitle" id="currentDate">Datum</div>
+            <h1 id="greeting">Dobrý den</h1>
 
-        <div id="tab-notes" class="tab-content">
-            <h1>Poznámky 📝</h1>
-            <textarea id="noteInput" placeholder="Myšlenky si piš sem... Ukládají se samy." oninput="saveNotes()"></textarea>
-        </div>
-
-        <div id="tab-expenses" class="tab-content">
-            <h1>Výdaje 💸</h1>
-            <div class="total-box">Celkem: <span id="totalExpense">0</span> Kč</div>
-            <div class="expense-inputs">
-                <input type="text" id="expName" placeholder="Za co?">
-                <input type="number" id="expAmount" placeholder="Kč" onkeypress="handleExpensePress(event)">
+            <div class="widget-grid">
+                <div class="widget" onclick="switchTab('tasks', document.getElementById('nav-tasks'))">
+                    <span class="widget-title">Úkoly</span>
+                    <span class="widget-value blue" id="dashActiveTasks">0</span>
+                </div>
+                <div class="widget" onclick="switchTab('expenses', document.getElementById('nav-expenses'))">
+                    <span class="widget-title">Útrata</span>
+                    <span class="widget-value" id="dashTotalExp">0 Kč</span>
+                </div>
             </div>
-            <ul id="expenseList"></ul>
+
+            <div class="section-header">Jak se dnes cítíš?</div>
+            <div class="mood-container" id="moodTracker">
+                <button class="mood-btn" onclick="setMood(this, '😭')">😭</button>
+                <button class="mood-btn" onclick="setMood(this, '😕')">😕</button>
+                <button class="mood-btn" onclick="setMood(this, '😐')">😐</button>
+                <button class="mood-btn" onclick="setMood(this, '🙂')">🙂</button>
+                <button class="mood-btn" onclick="setMood(this, '🤩')">🤩</button>
+            </div>
+
+            <div class="section-header">Rychlá poznámka</div>
+            <textarea id="dashNoteInput" placeholder="Co máš na srdci?" oninput="syncNotes(this.value)"></textarea>
+        </div>
+
+        <!-- MODULE 2: SEZNAM (ÚKOLY) -->
+        <div id="tab-tasks" class="tab-content">
+            <h1>Úkoly</h1>
+            
+            <ul class="inset-grouped">
+                <li><input type="text" class="list-input" id="taskInput" placeholder="Přidat nový úkol..." onkeypress="handleTaskPress(event)"></li>
+            </ul>
+
+            <div class="section-header" id="taskHeader">Aktivní položky</div>
+            <ul id="taskList" class="inset-grouped"></ul>
+        </div>
+
+        <!-- MODULE 3: VÝDAJE -->
+        <div id="tab-expenses" class="tab-content">
+            <h1>Finance</h1>
+
+            <ul class="inset-grouped">
+                <li><input type="text" class="list-input" id="expName" placeholder="Za co?"></li>
+                <li><input type="number" class="list-input" id="expAmount" placeholder="Částka (Kč)" onkeypress="handleExpensePress(event)"></li>
+            </ul>
+            <button class="action-btn" onclick="addExpenseBtn()">Uložit výdaj</button>
+
+            <div class="section-header">Historie a celkem: <span id="totalExpense" style="float:right; color:var(--text-primary); font-weight:700;">0 Kč</span></div>
+            <ul id="expenseList" class="inset-grouped"></ul>
+        </div>
+
+        <!-- MODULE 4: NÁSTROJE -->
+        <div id="tab-tools" class="tab-content">
+            <h1>Nástroje</h1>
+
+            <!-- Tip Calculator -->
+            <div class="section-header">Kalkulačka spropitného</div>
+            <ul class="inset-grouped" style="padding: 16px;">
+                <li style="padding:0; margin-bottom:12px;">
+                    <input type="number" class="list-input" id="billAmount" placeholder="Útrata (Kč)" oninput="calcTip()">
+                </li>
+                <li style="padding:0; border:none;">
+                    <div style="display:flex; justify-content:space-between; width:100%; gap:8px;">
+                        <button class="action-btn" style="margin:0; padding:10px; font-size:15px; background:var(--input-bg); color:var(--text-primary); box-shadow:none;" onclick="applyTip(10)">10%</button>
+                        <button class="action-btn" style="margin:0; padding:10px; font-size:15px; background:var(--input-bg); color:var(--text-primary); box-shadow:none;" onclick="applyTip(15)">15%</button>
+                        <button class="action-btn" style="margin:0; padding:10px; font-size:15px; background:var(--input-bg); color:var(--text-primary); box-shadow:none;" onclick="applyTip(20)">20%</button>
+                    </div>
+                </li>
+                <li style="padding:16px 0 0; border:none; justify-content:space-between;">
+                    <span class="item-text">Celkem s dýškem:</span>
+                    <span class="widget-value blue" id="tipTotal">0 Kč</span>
+                </li>
+            </ul>
+
+            <div class="section-header">Pitný režim (ml)</div>
+            <ul class="inset-grouped" style="justify-content:center; gap:20px; padding:20px; display:flex;">
+                <button class="action-btn" style="margin:0; width:60px; height:60px; background:var(--input-bg); color:var(--text-primary); box-shadow:none;" onclick="updateWater(-250)">-</button>
+                <span class="widget-value" id="waterAmount" style="font-size:32px;">0</span>
+                <button class="action-btn" style="margin:0; width:60px; height:60px;" onclick="updateWater(250)">+</button>
+            </ul>
+
         </div>
 
     </div>
 
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('tasks', this)">
-            <div class="nav-icon">🧳</div>
-            <span>Seznam</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('notes', this)">
-            <div class="nav-icon">📝</div>
-            <span>Poznámky</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('expenses', this)">
-            <div class="nav-icon">💸</div>
-            <span>Výdaje</span>
-        </div>
-    </nav>
+    <!-- SPODNÍ MENU -->
+    <div class="bottom-nav-container">
+        <nav class="bottom-nav">
+            <!-- 1. Přehled -->
+            <div class="nav-item active" id="nav-home" onclick="switchTab('home', this)">
+                <!-- Outline ikona (Neaktivní) -->
+                <svg class="nav-icon outline" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                <!-- Solid ikona (Aktivní) -->
+                <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 3l8 6v12h-5v-7H9v7H4V9z"/></svg>
+                <span class="nav-text">Přehled</span>
+            </div>
+            
+            <!-- 2. Úkoly (Seznam) -->
+            <div class="nav-item" id="nav-tasks" onclick="switchTab('tasks', this)">
+                <svg class="nav-icon outline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+                <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                <span class="nav-text">Seznam</span>
+            </div>
+            
+            <!-- 3. Finance -->
+            <div class="nav-item" id="nav-expenses" onclick="switchTab('expenses', this)">
+                <svg class="nav-icon outline" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                <span class="nav-text">Finance</span>
+            </div>
+            
+            <!-- 4. Nástroje -->
+            <div class="nav-item" id="nav-tools" onclick="switchTab('tools', this)">
+                <svg class="nav-icon outline" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg>
+                <span class="nav-text">Nástroje</span>
+            </div>
+        </nav>
+    </div>
 
     <script>
+        // --- DATA ---
+        let tasks = JSON.parse(localStorage.getItem('nh7-tasks')) || [];
+        let expenses = JSON.parse(localStorage.getItem('nh7-expenses')) || [];
+        let notes = localStorage.getItem('nh7-notes') || '';
+        let water = parseInt(localStorage.getItem('nh7-water')) || 0;
+        let mood = localStorage.getItem('nh7-mood') || null;
+
+        // Reset o půlnoci
+        const todayStr = new Date().toDateString();
+        if (localStorage.getItem('nh7-date') !== todayStr) {
+            water = 0; mood = null;
+            localStorage.setItem('nh7-water', 0);
+            localStorage.setItem('nh7-mood', '');
+            localStorage.setItem('nh7-date', todayStr);
+        }
+
+        function triggerHaptic() { if (navigator.vibrate) navigator.vibrate(10); }
+
+        // --- DASHBOARD ---
+        function setDashboardInfo() {
+            const now = new Date();
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('cs-CZ', { weekday: 'long', month: 'long', day: 'numeric' });
+            
+            const h = now.getHours();
+            document.getElementById('greeting').innerText = h < 9 ? 'Dobré ráno' : (h > 18 ? 'Dobrý večer' : 'Dobrý den');
+
+            document.getElementById('dashActiveTasks').innerText = tasks.filter(t => !t.packed).length;
+            document.getElementById('dashTotalExp').innerText = expenses.reduce((s, e) => s + e.amount, 0).toLocaleString('cs-CZ') + ' Kč';
+            document.getElementById('waterAmount').innerText = water;
+            document.getElementById('dashNoteInput').value = notes;
+
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            if (mood) {
+                const btns = Array.from(document.querySelectorAll('.mood-btn'));
+                const activeBtn = btns.find(b => b.innerText === mood);
+                if (activeBtn) activeBtn.classList.add('active');
+            }
+        }
+
+        // --- NÁLADA ---
+        function setMood(element, selectedMood) {
+            triggerHaptic();
+            document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            mood = selectedMood;
+            localStorage.setItem('nh7-mood', mood);
+        }
+
         // --- NAVIGACE ---
         function switchTab(tabId, element) {
+            triggerHaptic();
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
+            window.scrollTo(0, 0);
+            if (tabId === 'home') setDashboardInfo();
         }
 
-        // --- 1. SEZNAM (TASKS) ---
-        const taskInput = document.getElementById('taskInput');
-        const taskList = document.getElementById('taskList');
-        let tasks = JSON.parse(localStorage.getItem('novahub-tasks')) || [];
-
+        // --- ÚKOLY ---
         function renderTasks() {
-            taskList.innerHTML = '';
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            document.getElementById('taskHeader').style.display = tasks.length ? 'block' : 'none';
+            list.style.display = tasks.length ? 'block' : 'none';
+            
             tasks.forEach((task, index) => {
                 const li = document.createElement('li');
                 if (task.packed) li.classList.add('packed');
                 li.innerHTML = `
-                    <div class="checkbox"></div>
-                    <span class="item-text">${task.name}</span>
+                    <div style="display:flex; align-items:center; flex-grow:1; cursor:pointer;" onclick="toggleTask(${index})">
+                        <div class="checkbox"></div>
+                        <span class="item-text">${task.name}</span>
+                    </div>
                     <button class="delete-btn" onclick="deleteTask(event, ${index})">✕</button>
                 `;
-                li.onclick = () => toggleTask(index);
-                taskList.appendChild(li);
+                list.appendChild(li);
             });
-            localStorage.setItem('novahub-tasks', JSON.stringify(tasks));
+            localStorage.setItem('nh7-tasks', JSON.stringify(tasks));
+            setDashboardInfo();
         }
 
         function handleTaskPress(e) {
-            if (e.key === 'Enter' && taskInput.value.trim() !== '') {
-                tasks.unshift({ name: taskInput.value.trim(), packed: false });
-                taskInput.value = '';
-                renderTasks();
+            const input = document.getElementById('taskInput');
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                triggerHaptic();
+                tasks.unshift({ name: input.value.trim(), packed: false });
+                input.value = ''; input.blur(); renderTasks();
             }
         }
 
         function toggleTask(index) {
+            triggerHaptic();
             tasks[index].packed = !tasks[index].packed;
             tasks.sort((a, b) => a.packed === b.packed ? 0 : a.packed ? 1 : -1);
             renderTasks();
         }
 
-        function deleteTask(e, index) {
-            e.stopPropagation();
-            tasks.splice(index, 1);
-            renderTasks();
-        }
+        function deleteTask(e, index) { e.stopPropagation(); triggerHaptic(); tasks.splice(index, 1); renderTasks(); }
 
-        // --- 2. POZNÁMKY ---
-        const noteInput = document.getElementById('noteInput');
-        noteInput.value = localStorage.getItem('novahub-notes') || '';
-        
-        function saveNotes() {
-            localStorage.setItem('novahub-notes', noteInput.value);
-        }
-
-        // --- 3. VÝDAJE ---
-        const expName = document.getElementById('expName');
-        const expAmount = document.getElementById('expAmount');
-        const expenseList = document.getElementById('expenseList');
-        const totalExpenseEl = document.getElementById('totalExpense');
-        let expenses = JSON.parse(localStorage.getItem('novahub-expenses')) || [];
-
+        // --- FINANCE ---
         function renderExpenses() {
-            expenseList.innerHTML = '';
+            const list = document.getElementById('expenseList');
+            list.innerHTML = '';
             let total = 0;
+            list.style.display = expenses.length ? 'block' : 'none';
+
             expenses.forEach((exp, index) => {
                 total += exp.amount;
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <span class="item-text">${exp.name}</span>
-                    <span class="expense-amount">${exp.amount} Kč</span>
-                    <button class="delete-btn" onclick="deleteExpense(${index})">✕</button>
+                    <div style="display:flex; align-items:center;">
+                        <span style="color:var(--text-secondary); margin-right:12px; font-weight:600;">${exp.amount.toLocaleString('cs-CZ')} Kč</span>
+                        <button class="delete-btn" onclick="deleteExpense(event, ${index})">✕</button>
+                    </div>
                 `;
-                expenseList.appendChild(li);
+                list.appendChild(li);
             });
-            totalExpenseEl.innerText = total;
-            localStorage.setItem('novahub-expenses', JSON.stringify(expenses));
+            document.getElementById('totalExpense').innerText = total.toLocaleString('cs-CZ') + ' Kč';
+            localStorage.setItem('nh7-expenses', JSON.stringify(expenses));
+            setDashboardInfo();
         }
 
-        function handleExpensePress(e) {
-            if (e.key === 'Enter' && expName.value.trim() !== '' && expAmount.value !== '') {
-                expenses.unshift({ 
-                    name: expName.value.trim(), 
-                    amount: parseFloat(expAmount.value) 
-                });
-                expName.value = '';
-                expAmount.value = '';
-                expName.focus();
-                renderExpenses();
+        function addExpenseBtn() {
+            const name = document.getElementById('expName');
+            const amt = document.getElementById('expAmount');
+            if (name.value.trim() !== '' && amt.value !== '') {
+                triggerHaptic();
+                expenses.unshift({ name: name.value.trim(), amount: parseFloat(amt.value) });
+                name.value = ''; amt.value = ''; amt.blur(); renderExpenses();
             }
         }
 
-        function deleteExpense(index) {
-            expenses.splice(index, 1);
-            renderExpenses();
+        function handleExpensePress(e) { if (e.key === 'Enter') addExpenseBtn(); }
+        function deleteExpense(e, index) { e.stopPropagation(); triggerHaptic(); expenses.splice(index, 1); renderExpenses(); }
+
+        // --- NÁSTROJE ---
+        function syncNotes(val) { notes = val; localStorage.setItem('nh7-notes', val); }
+
+        function updateWater(amt) {
+            triggerHaptic(); water += amt; if (water < 0) water = 0;
+            localStorage.setItem('nh7-water', water);
+            document.getElementById('waterAmount').innerText = water;
         }
 
-        // --- INICIALIZACE ---
-        renderTasks();
-        renderExpenses();
+        let currentTip = 0;
+        function applyTip(percent) { triggerHaptic(); currentTip = percent; calcTip(); }
+        function calcTip() {
+            const bill = parseFloat(document.getElementById('billAmount').value) || 0;
+            const total = bill + (bill * (currentTip / 100));
+            document.getElementById('tipTotal').innerText = Math.round(total).toLocaleString('cs-CZ') + ' Kč';
+        }
+
+        // Init
+        renderTasks(); renderExpenses(); setDashboardInfo();
     </script>
 </body>
 </html>
