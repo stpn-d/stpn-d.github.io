@@ -7,12 +7,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>NovaHub</title>
 
-    <!-- Base64 zakódované SVG pro 100% spolehlivost v iOS Safari -->
     <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMDA3YWZmIi8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OPC90ZXh0Pjwvc3ZnPg==">
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIyIiBmaWxsPSIjMDA3YWZmIi8+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5OPC90ZXh0Pjwvc3ZnPg==">
 
     <style>
-        /* iOS 26 Design System */
         :root {
             /* Light Mode */
             --bg-color: #F2F2F7;
@@ -24,9 +22,8 @@
             --separator: rgba(60, 60, 67, 0.1);
             --danger: #FF3B30;
             
-            /* Bottom Nav */
             --nav-bg: rgba(255, 255, 255, 0.85);
-            --nav-active-bg: rgba(0, 0, 0, 0.08); /* Pozadí aktivního tlačítka v menu */
+            --nav-active-bg: rgba(0, 0, 0, 0.08);
             --nav-border: rgba(0, 0, 0, 0.05);
             --input-bg: rgba(118, 118, 128, 0.08);
             
@@ -47,7 +44,7 @@
                 --danger: #FF453A;
                 
                 --nav-bg: rgba(28, 28, 30, 0.85);
-                --nav-active-bg: rgba(255, 255, 255, 0.15); /* Pozadí aktivního tlačítka v dark modu */
+                --nav-active-bg: rgba(255, 255, 255, 0.15);
                 --nav-border: rgba(255, 255, 255, 0.05);
                 --input-bg: rgba(255, 255, 255, 0.08);
             }
@@ -55,9 +52,16 @@
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+        /* FIX PRO ČERNÝ PRUH NA IOS: Background aplikován i na html, vynucená výška */
+        html, body {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            transition: background-color 0.3s ease;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-primary);
             margin: 0;
             padding: max(20px, env(safe-area-inset-top)) 20px 140px;
@@ -185,9 +189,12 @@
             font-size: 14px; font-weight: 600; cursor: pointer;
         }
 
-        /* --- SPODNÍ MENU (Podle tvého screenshotu image_34623c.png) --- */
+        /* --- FIX: SPODNÍ MENU BLÍŽE K OKRAJI --- */
         .bottom-nav-container {
-            position: fixed; bottom: 32px; left: 0; right: 0;
+            position: fixed; 
+            /* Změněno z pevných 32px na chytrou safe-area výšku */
+            bottom: max(12px, env(safe-area-inset-bottom)); 
+            left: 0; right: 0;
             display: flex; justify-content: center; z-index: 100;
             pointer-events: none;
         }
@@ -206,13 +213,12 @@
         .nav-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: 72px; height: 64px;
-            border-radius: 32px; /* Dělá z aktivního pozadí krásný kruh/oválek obalující vše */
+            border-radius: 32px;
             cursor: pointer;
             color: var(--text-primary);
             transition: background 0.3s ease;
         }
 
-        /* Text uvnitř tlačítka */
         .nav-text {
             font-size: 11px; font-weight: 600;
             margin-top: 4px;
@@ -220,7 +226,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Když je tlačítko aktivní */
         .nav-item.active {
             background: var(--nav-active-bg);
         }
@@ -228,13 +233,11 @@
             color: var(--tint-color);
         }
 
-        /* Systém obrysových (outline) a vyplněných (solid) ikon */
         .nav-icon { width: 24px; height: 24px; }
         
         .nav-icon.solid { display: none; fill: var(--tint-color); }
         .nav-icon.outline { display: block; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* Přepnutí ikony na plnou při aktivaci */
         .nav-item.active .nav-icon.outline { display: none; }
         .nav-item.active .nav-icon.solid { display: block; }
 
@@ -244,7 +247,6 @@
 
     <div class="container">
         
-        <!-- MODULE 1: PŘEHLED (HOME) -->
         <div id="tab-home" class="tab-content active">
             <div class="date-subtitle" id="currentDate">Datum</div>
             <h1 id="greeting">Dobrý den</h1>
@@ -273,7 +275,6 @@
             <textarea id="dashNoteInput" placeholder="Co máš na srdci?" oninput="syncNotes(this.value)"></textarea>
         </div>
 
-        <!-- MODULE 2: SEZNAM (ÚKOLY) -->
         <div id="tab-tasks" class="tab-content">
             <h1>Úkoly</h1>
             
@@ -285,7 +286,6 @@
             <ul id="taskList" class="inset-grouped"></ul>
         </div>
 
-        <!-- MODULE 3: VÝDAJE -->
         <div id="tab-expenses" class="tab-content">
             <h1>Finance</h1>
 
@@ -299,11 +299,9 @@
             <ul id="expenseList" class="inset-grouped"></ul>
         </div>
 
-        <!-- MODULE 4: NÁSTROJE -->
         <div id="tab-tools" class="tab-content">
             <h1>Nástroje</h1>
 
-            <!-- Tip Calculator -->
             <div class="section-header">Kalkulačka spropitného</div>
             <ul class="inset-grouped" style="padding: 16px;">
                 <li style="padding:0; margin-bottom:12px;">
@@ -333,33 +331,26 @@
 
     </div>
 
-    <!-- SPODNÍ MENU -->
     <div class="bottom-nav-container">
         <nav class="bottom-nav">
-            <!-- 1. Přehled -->
             <div class="nav-item active" id="nav-home" onclick="switchTab('home', this)">
-                <!-- Outline ikona (Neaktivní) -->
                 <svg class="nav-icon outline" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                <!-- Solid ikona (Aktivní) -->
                 <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 3l8 6v12h-5v-7H9v7H4V9z"/></svg>
                 <span class="nav-text">Přehled</span>
             </div>
             
-            <!-- 2. Úkoly (Seznam) -->
             <div class="nav-item" id="nav-tasks" onclick="switchTab('tasks', this)">
                 <svg class="nav-icon outline" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
                 <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                 <span class="nav-text">Seznam</span>
             </div>
             
-            <!-- 3. Finance -->
             <div class="nav-item" id="nav-expenses" onclick="switchTab('expenses', this)">
                 <svg class="nav-icon outline" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
                 <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
                 <span class="nav-text">Finance</span>
             </div>
             
-            <!-- 4. Nástroje -->
             <div class="nav-item" id="nav-tools" onclick="switchTab('tools', this)">
                 <svg class="nav-icon outline" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
                 <svg class="nav-icon solid" viewBox="0 0 24 24"><path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg>
@@ -376,7 +367,6 @@
         let water = parseInt(localStorage.getItem('nh7-water')) || 0;
         let mood = localStorage.getItem('nh7-mood') || null;
 
-        // Reset o půlnoci
         const todayStr = new Date().toDateString();
         if (localStorage.getItem('nh7-date') !== todayStr) {
             water = 0; mood = null;
@@ -387,7 +377,6 @@
 
         function triggerHaptic() { if (navigator.vibrate) navigator.vibrate(10); }
 
-        // --- DASHBOARD ---
         function setDashboardInfo() {
             const now = new Date();
             document.getElementById('currentDate').innerText = now.toLocaleDateString('cs-CZ', { weekday: 'long', month: 'long', day: 'numeric' });
@@ -408,7 +397,6 @@
             }
         }
 
-        // --- NÁLADA ---
         function setMood(element, selectedMood) {
             triggerHaptic();
             document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.remove('active'));
@@ -417,7 +405,6 @@
             localStorage.setItem('nh7-mood', mood);
         }
 
-        // --- NAVIGACE ---
         function switchTab(tabId, element) {
             triggerHaptic();
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -429,7 +416,6 @@
             if (tabId === 'home') setDashboardInfo();
         }
 
-        // --- ÚKOLY ---
         function renderTasks() {
             const list = document.getElementById('taskList');
             list.innerHTML = '';
@@ -470,7 +456,6 @@
 
         function deleteTask(e, index) { e.stopPropagation(); triggerHaptic(); tasks.splice(index, 1); renderTasks(); }
 
-        // --- FINANCE ---
         function renderExpenses() {
             const list = document.getElementById('expenseList');
             list.innerHTML = '';
@@ -507,7 +492,6 @@
         function handleExpensePress(e) { if (e.key === 'Enter') addExpenseBtn(); }
         function deleteExpense(e, index) { e.stopPropagation(); triggerHaptic(); expenses.splice(index, 1); renderExpenses(); }
 
-        // --- NÁSTROJE ---
         function syncNotes(val) { notes = val; localStorage.setItem('nh7-notes', val); }
 
         function updateWater(amt) {
@@ -524,7 +508,6 @@
             document.getElementById('tipTotal').innerText = Math.round(total).toLocaleString('cs-CZ') + ' Kč';
         }
 
-        // Init
         renderTasks(); renderExpenses(); setDashboardInfo();
     </script>
 </body>
