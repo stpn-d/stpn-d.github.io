@@ -8,7 +8,10 @@
     <meta name="theme-color" content="#f5f5f7">
     
     <title>NovaHub</title>
-    
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007aff'/><text x='50%' y='50%' font-size='50' font-family='system-ui, sans-serif' font-weight='bold' fill='white' dominant-baseline='central' text-anchor='middle'>N</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23007aff'/><text x='50%' y='50%' font-size='50' font-family='system-ui, sans-serif' font-weight='bold' fill='white' dominant-baseline='central' text-anchor='middle'>N</text></svg>">
+
     <style>
         :root {
             --bg-color: #f5f5f7;
@@ -16,7 +19,7 @@
             --accent-color: #007aff;
             --card-bg: #ffffff;
             --danger: #ff3b30;
-            --nav-bg: rgba(255, 255, 255, 0.85);
+            --nav-bg: rgba(255, 255, 255, 0.75);
         }
 
         body {
@@ -24,7 +27,8 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 40px 20px 100px; /* Spodní padding kvůli navigaci */
+            /* Podpora pro notch nahoře, dole už bez safe-area pro iOS 26 */
+            padding: max(20px, env(safe-area-inset-top)) 20px 90px; 
             -webkit-font-smoothing: antialiased;
         }
 
@@ -34,44 +38,49 @@
         }
 
         h1 {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 34px;
+            font-weight: 800;
             margin-bottom: 24px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.8px;
         }
 
         /* Taby / Sekce */
         .tab-content {
             display: none;
-            animation: fadeIn 0.3s ease;
+            animation: fadeScale 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
 
         .tab-content.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeScale {
+            from { opacity: 0; transform: scale(0.98) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         /* Společné prvky pro vstupy */
         input[type="text"], input[type="number"], textarea {
             width: 100%;
             box-sizing: border-box;
-            padding: 16px;
+            padding: 18px;
             border: none;
-            border-radius: 14px;
+            border-radius: 18px;
             font-size: 17px;
             margin-bottom: 20px;
             background: var(--card-bg);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.04);
             outline: none;
             font-family: inherit;
+            transition: box-shadow 0.2s ease;
+        }
+
+        input:focus, textarea:focus {
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.15);
         }
 
         textarea {
-            height: 300px;
+            height: 350px;
             resize: none;
             line-height: 1.5;
         }
@@ -83,68 +92,79 @@
             display: flex;
             align-items: center;
             background: var(--card-bg);
-            padding: 16px;
-            border-radius: 14px;
+            padding: 18px;
+            border-radius: 18px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            transition: transform 0.1s ease;
         }
 
-        li.packed { opacity: 0.5; }
+        li:active { transform: scale(0.98); }
+        li.packed { opacity: 0.4; }
         li.packed .item-text { text-decoration: line-through; }
 
         .checkbox {
-            width: 22px; height: 22px;
+            width: 24px; height: 24px;
             border: 2px solid var(--accent-color);
             border-radius: 50%;
             margin-right: 16px;
             flex-shrink: 0;
+            transition: all 0.2s ease;
         }
-        li.packed .checkbox { background: var(--accent-color); }
+        li.packed .checkbox { 
+            background: var(--accent-color); 
+            border-color: var(--accent-color);
+        }
 
-        .item-text { font-size: 17px; flex-grow: 1; }
+        .item-text { font-size: 17px; flex-grow: 1; font-weight: 500; }
         
         .expense-amount {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--danger);
             margin-right: 12px;
         }
 
         .delete-btn {
-            color: var(--danger);
+            color: #c7c7cc;
             font-weight: 600;
             background: none;
             border: none;
             padding: 8px;
+            font-size: 18px;
             cursor: pointer;
+            transition: color 0.2s ease;
         }
+        
+        .delete-btn:hover { color: var(--danger); }
 
         .total-box {
-            background: var(--accent-color);
+            background: linear-gradient(135deg, #007aff, #005bb5);
             color: white;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 20px;
+            padding: 20px;
+            border-radius: 18px;
+            font-size: 22px;
             font-weight: bold;
             text-align: center;
             margin-bottom: 24px;
-            box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);
         }
 
-        /* Spodní navigace */
+        /* Spodní navigace - bez home bar spacingu pro iOS 26 */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             display: flex;
             justify-content: space-around;
-            padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 16px 20px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            z-index: 100;
         }
 
         .nav-item {
@@ -152,20 +172,21 @@
             flex-direction: column;
             align-items: center;
             color: #8e8e93;
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            transition: color 0.2s ease;
         }
 
         .nav-item.active { color: var(--accent-color); }
-        .nav-icon { font-size: 24px; margin-bottom: 4px; filter: grayscale(100%); opacity: 0.5; }
-        .nav-item.active .nav-icon { filter: grayscale(0%); opacity: 1; }
+        .nav-icon { font-size: 24px; margin-bottom: 4px; filter: grayscale(100%); opacity: 0.6; transition: all 0.2s ease; }
+        .nav-item.active .nav-icon { filter: grayscale(0%); opacity: 1; transform: translateY(-2px); }
 
         /* Expense Input Row */
-        .expense-inputs { display: flex; gap: 10px; }
+        .expense-inputs { display: flex; gap: 12px; }
         .expense-inputs input[type="text"] { flex-grow: 1; }
-        .expense-inputs input[type="number"] { width: 100px; }
+        .expense-inputs input[type="number"] { width: 110px; }
 
     </style>
 </head>
@@ -173,20 +194,17 @@
 
     <div class="container">
         
-        <!-- MODULE 1: SEZNAM -->
         <div id="tab-tasks" class="tab-content active">
             <h1>Seznam 🧳</h1>
             <input type="text" id="taskInput" placeholder="Co přidáme?" onkeypress="handleTaskPress(event)">
             <ul id="taskList"></ul>
         </div>
 
-        <!-- MODULE 2: POZNÁMKY -->
         <div id="tab-notes" class="tab-content">
             <h1>Poznámky 📝</h1>
-            <textarea id="noteInput" placeholder="Zapiš si myšlenky sem... Automaticky se ukládají." oninput="saveNotes()"></textarea>
+            <textarea id="noteInput" placeholder="Myšlenky si piš sem... Ukládají se samy." oninput="saveNotes()"></textarea>
         </div>
 
-        <!-- MODULE 3: VÝDAJE -->
         <div id="tab-expenses" class="tab-content">
             <h1>Výdaje 💸</h1>
             <div class="total-box">Celkem: <span id="totalExpense">0</span> Kč</div>
@@ -199,7 +217,6 @@
 
     </div>
 
-    <!-- SPODNÍ NAVIGACE -->
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('tasks', this)">
             <div class="nav-icon">🧳</div>
