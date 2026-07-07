@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dohodář</title>
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DPP Hub">
+
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2300b494'/><stop offset='100%' stop-color='%23006a60'/></linearGradient><rect width='512' height='512' rx='115' fill='url(%23g)'/><text x='50%' y='54%' font-family='system-ui, -apple-system, sans-serif' font-weight='700' font-size='260' fill='%23ffffff' dominant-baseline='middle' text-anchor='middle'>D</text></svg>">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2300b494'/><stop offset='100%' stop-color='%23006a60'/></linearGradient><rect width='512' height='512' rx='115' fill='url(%23g)'/><text x='50%' y='54%' font-family='system-ui, -apple-system, sans-serif' font-weight='700' font-size='260' fill='%23ffffff' dominant-baseline='middle' text-anchor='middle'>D</text></svg>">
+  <!-- Beer CSS and Material Dynamic Colors CDNs -->
+  <link href="https://cdn.jsdelivr.net/npm/beercss@4.0.23/dist/cdn/beer.min.css" rel="stylesheet">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@4.0.23/dist/cdn/beer.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.4/dist/cdn/material-dynamic-colors.min.js"></script>
+
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <style>
+    :root,
+    body.light {
+      --primary: #006a60;
+      --on-primary: #ffffff;
+      --primary-container: #77f8e7;
+      --on-primary-container: #00201c;
+      --secondary: #4a635f;
+      --on-secondary: #ffffff;
+      --secondary-container: #cce8e1;
+      --on-secondary-container: #05201c;
+      --tertiary: #456179;
+      --on-tertiary: #ffffff;
+      --tertiary-container: #cce5ff;
+      --on-tertiary-container: #001e31;
+      --error: #ba1a1a;
+      --on-error: #ffffff;
+      --error-container: #ffdad6;
+      --on-error-container: #410002;
+      --background: #fffbff;
+      --on-background: #1c1b1e;
+      --surface: #fdf8fd;
+      --on-surface: #1c1b1e;
+      --surface-variant: #e7e0eb;
+      --on-surface-variant: #49454e;
+      --outline: #7a757f;
+      --outline-variant: #cac4cf;
+      --shadow: #000000;
+      --scrim: #000000;
+      --inverse-surface: #313033;
+      --inverse-on-surface: #f4eff4;
+      --inverse-primary: #58dbc9;
+      --surface-dim: #ddd8dd;
+      --surface-bright: #fdf8fd;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f7f2f7;
+      --surface-container: #f2ecf1;
+      --surface-container-high: #ece7eb;
+      --surface-container-highest: #e6e1e6;
+    }
+    body.dark {
+      --primary: #58dbc9;
+      --on-primary: #003731;
+      --primary-container: #005048;
+      --on-primary-container: #77f8e7;
+      --secondary: #b0ccc6;
+      --on-secondary: #1b3531;
+      --secondary-container: #324b47;
+      --on-secondary-container: #cce8e1;
+      --tertiary: #adc9e6;
+      --on-tertiary: #143349;
+      --tertiary-container: #2d4a61;
+      --on-tertiary-container: #cce5ff;
+      --error: #ffb4ab;
+      --on-error: #690005;
+      --error-container: #93000a;
+      --on-error-container: #ffb4ab;
+      --background: #1c1b1e;
+      --on-background: #e6e1e6;
+      --surface: #141316;
+      --on-surface: #e6e1e6;
+      --surface-variant: #49454e;
+      --on-surface-variant: #cac4cf;
+      --outline: #948f99;
+      --outline-variant: #49454e;
+      --shadow: #000000;
+      --scrim: #000000;
+      --inverse-surface: #e6e1e6;
+      --inverse-on-surface: #313033;
+      --inverse-primary: #006a60;
+      --surface-dim: #141316;
+      --surface-bright: #3a383c;
+      --surface-container-lowest: #0f0e11;
+      --surface-container-low: #1c1b1e;
+      --surface-container: #201f22;
+      --surface-container-high: #2b292d;
+      --surface-container-highest: #363438;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-bottom: 4.25rem;
+    }
+
+    body {
+      font-family: 'Google Sans Flex', 'Google Sans', system-ui, sans-serif;
+      background-color: var(--surface);
+    }
+
+    /* --- Sidebar nav (large) --- */
+    nav.left.max { padding-inline: 1rem; }
+    nav.left.max header { padding: 1.5rem 0.25rem 1rem; }
+    nav.left.max header nav {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-height: 2.5rem;
+      padding: 0;
+    }
+    nav.left.max header nav h6 { font-weight: 600; letter-spacing: 0.2px; margin: 0; }
+    nav.left .divider { margin: 0.75rem 0.25rem; }
+    nav.left a.active {
+      color: var(--primary);
+    }
+    nav.left a.active i {
+      background-color: var(--secondary-container);
+      color: var(--on-secondary-container);
+    }
+    nav.left.max a {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      align-items: center;
+      column-gap: 0.75rem;
+      height: auto;
+      min-height: 4.25rem;
+      padding: 0.6rem 1rem;
+      border-radius: 2rem;
+      text-align: left;
+    }
+    nav.left.max a i { margin: 0; }
+    nav.left.max a .nav-text { display: flex; flex-direction: column; gap: 0.1rem; }
+    nav.left.max a .nav-label { font-weight: 600; }
+    nav.left.max a .nav-desc { font-size: 0.72rem; font-weight: 400; opacity: 0.65; white-space: normal; line-height: 1.2; }
+
+
+
+    /* --- Content --- */
+    main.responsive { max-width: 1150px; padding-bottom: 4rem; }
+
+    /* --- Fixed Overlapping Settings Menu --- */
+    .page-header {
+      position: relative;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 1rem;
+      margin: 1.5rem 0 1.1rem;
+    }
+    .icon-action {
+      width: 2.6rem;
+      height: 2.6rem;
+      padding: 0;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .settings-menu {
+      position: relative;
+      flex: 0 0 auto;
+      z-index: 200;
+    }
+    .settings-menu summary {
+      list-style: none;
+      cursor: pointer;
+    }
+    .settings-menu summary::-webkit-details-marker { display: none; }
+    
+    .settings-panel {
+      position: absolute;
+      top: calc(100% + 0.55rem);
+      right: 0;
+      z-index: 9999 !important;
+      width: min(19rem, calc(100vw - 2rem));
+      padding: 1.25rem;
+      border: 1px solid var(--outline-variant);
+      border-radius: 18px;
+      background-color: var(--surface-container-high);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+    .settings-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      opacity: 0.72;
+      text-transform: uppercase;
+    }
+    .accent-picker {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0;
+      border-radius: 999px;
+    }
+    .accent-swatch {
+      width: 1.8rem;
+      height: 1.8rem;
+      min-width: 1.8rem;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .accent-swatch.active {
+      border-color: var(--on-surface);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .copyright {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--outline-variant);
+      font-size: 0.78rem;
+      opacity: 0.72;
+    }
+    .study-overview {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin: 0 0 1.5rem;
+    }
+    .study-stat {
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--outline-variant);
+      border-radius: 14px;
+      background-color: var(--surface-container-lowest);
+    }
+    .study-stat .label {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+      opacity: 0.72;
+    }
+    .study-stat .value {
+      margin-top: 0.3rem;
+      font-size: 1.18rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    section { scroll-margin-top: 1.5rem; margin-bottom: 1.5rem; }
+    #home { scroll-margin-top: 1rem; }
+
+    article {
+      border: none !important;
+      border-radius: 24px !important;
+      background-color: var(--surface-container-low);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem 1.75rem;
+    }
+    .dark article { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35); }
+
+    .article-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      color: var(--primary);
+    }
+
+    .breakdown-table { width: 100%; border-collapse: collapse; }
+    .breakdown-table th, .breakdown-table td {
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--outline-variant);
+      color: var(--on-surface);
+    }
+    .breakdown-table th { text-align: left; font-weight: 500; opacity: 0.85; }
+    .breakdown-table td { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    .text-deduction { color: var(--error) !important; }
+    .text-addition { color: var(--primary) !important; }
+    .text-success { color: var(--tertiary) !important; }
+
+    .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip-checkbox { display: none; }
+    .chip-label {
+      cursor: pointer;
+      transition: 0.15s;
+      border: none !important;
+      background-color: var(--surface-container-high);
+      border-radius: 12px !important;
+    }
+    .chip-checkbox:checked + .chip-label {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .helper { opacity: 0.7; font-size: 0.85rem; }
+
+    .currency-switcher {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 18px;
+      background-color: var(--surface-container-high);
+    }
+    .currency-switcher .label { font-weight: 600; }
+    .currency-options {
+      display: flex;
+      gap: 0.4rem;
+      flex: 0 0 auto;
+    }
+    .currency-options button {
+      min-width: 3.25rem;
+      height: 2.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .currency-options button.active {
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+
+    #limitWarning {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      width: 100%;
+      min-height: 0;
+      margin: 0 0 1.25rem;
+      padding: 0.85rem 1rem;
+      border-radius: 16px;
+      white-space: normal;
+      line-height: 1.35;
+    }
+    #limitWarning i { flex: 0 0 auto; }
+    #limitWarning span { flex: 1; min-width: 0; }
+
+    .final-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+      border-radius: 18px;
+      padding: 1.1rem 1.4rem;
+    }
+    .final-result .label { font-size: 1rem; font-weight: 500; }
+    .final-result .value { font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* --- GitHub style Yearly grid --- */
+    .year-grid-container {
+      background-color: var(--surface-container-lowest);
+      border-radius: 16px;
+      border: 1px solid var(--outline-variant);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .year-grid {
+      display: grid;
+      grid-template-rows: repeat(7, 11px);
+      grid-auto-flow: column;
+      grid-auto-columns: 11px;
+      gap: 3px;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+    }
+    .year-grid-cell {
+      width: 11px;
+      height: 11px;
+      border-radius: 2px;
+      cursor: pointer;
+      background-color: var(--surface-container-highest);
+      transition: transform 0.15s;
+    }
+    .year-grid-cell:hover {
+      transform: scale(1.35);
+      z-index: 10;
+    }
+
+    @media (max-width: 600px) {
+      main.responsive { padding-bottom: 5.25rem; }
+      .page-header {
+        margin-top: 1rem;
+        grid-template-columns: 1fr auto;
+      }
+      .study-overview {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+      }
+      .study-stat {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .study-stat .value { margin-top: 0; }
+      article { padding: 1.15rem; border-radius: 18px !important; }
+      .breakdown-table th, .breakdown-table td { padding: 0.72rem 0; }
+      .year-grid-container { padding: 0.5rem; }
+    }
+  </style>
+</head>
+<body class="dark">
+
+  <!-- Sidebar: large screens -->
+  <nav class="left max l">
+    <header>
+      <nav>
+        <i class="extra">payments</i>
+        <h6 class="font-bold">Dohodář</h6>
+      </nav>
+    </header>
+    <a href="#home" data-section="home" aria-label="Domů: rychlý přehled">
+      <i>home</i>
+      <div class="nav-text">
+        <span class="nav-label">Domů</span>
+        <span class="nav-desc">Rychlý přehled a vzhled</span>
+      </div>
+    </a>
+    <a href="#parametry" data-section="parametry" aria-label="Parametry: mzda, dny, limit a dovolená">
+      <i>tune</i>
+      <div class="nav-text">
+        <span class="nav-label">Parametry</span>
+        <span class="nav-desc">Mzda, dny v týdnu a limity</span>
+      </div>
+    </a>
+    <a href="#priplatky" data-section="priplatky" aria-label="Příplatky: víkend, noc a svátek">
+      <i>more_time</i>
+      <div class="nav-text">
+        <span class="nav-label">Příplatky</span>
+        <span class="nav-desc">Hodiny o víkendech a nocích</span>
+      </div>
+    </a>
+    <a href="#dane" data-section="dane" aria-label="Daně a slevy: prohlášení a ZTP/P">
+      <i>percent</i>
+      <div class="nav-text">
+        <span class="nav-label">Daně a slevy</span>
+        <span class="nav-desc">Růžový papír a ZTP/P</span>
+      </div>
+    </a>
+    <a href="#vykaz" data-section="vykaz" aria-label="Výkaz hodin: podrobný kalendář">
+      <i>calendar_month</i>
+      <div class="nav-text">
+        <span class="nav-label">Výkaz hodin</span>
+        <span class="nav-desc">Evidování 52 týdnů + 1 den</span>
+      </div>
+    </a>
+    <a href="#rozpis" data-section="rozpis" aria-label="Rozpis mzdy: podrobné vyúčtování">
+      <i>receipt_long</i>
+      <div class="nav-text">
+        <span class="nav-label">Rozpis mzdy</span>
+        <span class="nav-desc">Hrubá, odvody a čistá mzda</span>
+      </div>
+    </a>
+  </nav>
+
+  <!-- Sidebar: medium screens (icons only) -->
+  <nav class="left m">
+    <header>
+      <i class="extra">payments</i>
+    </header>
+    <a href="#home" data-section="home" title="Domů" aria-label="Domů"><i>home</i></a>
+    <a href="#parametry" data-section="parametry" title="Parametry" aria-label="Parametry"><i>tune</i></a>
+    <a href="#priplatky" data-section="priplatky" title="Příplatky" aria-label="Příplatky"><i>more_time</i></a>
+    <a href="#dane" data-section="dane" title="Daně a slevy" aria-label="Daně a slevy"><i>percent</i></a>
+    <a href="#vykaz" data-section="vykaz" title="Výkaz hodin" aria-label="Výkaz hodin"><i>calendar_month</i></a>
+    <a href="#rozpis" data-section="rozpis" title="Rozpis mzdy" aria-label="Rozpis mzdy"><i>receipt_long</i></a>
+  </nav>
+
+  <!-- Bottom nav: small screens -->
+  <nav class="bottom s">
+    <a href="#home" data-section="home">
+      <i>home</i>
+      <div>Domů</div>
+    </a>
+    <a href="#parametry" data-section="parametry">
+      <i>tune</i>
+      <div>Kalkulačka</div>
+    </a>
+    <a href="#vykaz" data-section="vykaz">
+      <i>calendar_month</i>
+      <div>Výkaz</div>
+    </a>
+    <a href="#rozpis" data-section="rozpis">
+      <i>receipt_long</i>
+      <div>Rozpis</div>
+    </a>
+  </nav>
+
+  <main class="responsive">
+
+    <!-- PAGE 1: CALCULATOR VIEW -->
+    <div id="page-calculator">
+      <section id="home">
+        <div class="page-header">
+          <div>
+            <h4 class="no-margin font-bold">Dohodář</h4>
+            <div class="subtitle opacity-75">Kalkulačka a kalendář pro DPP</div>
+          </div>
+          <details class="settings-menu">
+            <summary>
+              <span class="button circle border" title="Nastavení vzhledu" aria-label="Nastavení vzhledu">
+                <i>settings</i>
+              </span>
+            </summary>
+            <div class="settings-panel">
+              <div class="settings-row">
+                <div>
+                  <div class="settings-title font-bold">Vzhled</div>
+                  <div class="helper">Světlý nebo tmavý režim</div>
+                </div>
+                <button class="icon-action border" type="button" onclick="toggleTheme()" title="Přepnout režim" aria-label="Přepnout režim">
+                  <i id="theme-icon-control">light_mode</i>
+                </button>
+              </div>
+              <div class="settings-title font-bold" style="margin-top: 1rem; margin-bottom: 0.5rem;">Akcentová barva</div>
+              <div class="accent-picker" aria-label="Akcentová barva">
+                <button class="accent-swatch" type="button" data-accent="teal" title="Tyrkysová" style="background:#00a896"></button>
+                <button class="accent-swatch" type="button" data-accent="blue" title="Modrá" style="background:#2f80ed"></button>
+                <button class="accent-swatch" type="button" data-accent="green" title="Zelená" style="background:#3a7d44"></button>
+                <button class="accent-swatch" type="button" data-accent="rose" title="Růžová" style="background:#c04c72"></button>
+              </div>
+              <div class="copyright">© 2026 STPN-JPG.</div>
+            </div>
+          </details>
+        </div>
+
+        <div class="study-overview" aria-label="Rychlý přehled">
+          
+          <div class="study-stat">
+            <div class="label"><i>payments</i> Hrubá mzda</div>
+            <div class="value" id="summaryGross">0 Kč</div>
+          </div>
+          <div class="study-stat">
+            <div class="label"><i>savings</i> Čistá mzda</div>
+            <div class="value" id="summaryNet">0 Kč</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <div class="s12 m12 l7">
+
+          <section id="parametry">
+            <article>
+              <div class="article-header">
+                <i>tune</i>
+                <h6 class="no-margin font-bold">Základní parametry</h6>
+              </div>
+
+              <!-- Static Advisory DPP limit Warning Box -->
+              <div class="row padding round amber-border amber-text" style="background: rgba(255, 193, 7, 0.08); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 16px; margin-bottom: 1.5rem; align-items: flex-start;">
+                <i style="color: #ffb300; margin-top: 2px;">warning</i>
+                <div class="max">
+                  <strong style="display: block; font-size: 0.9rem; color: var(--on-surface);">Zákonný limit DPP: 300 hodin ročně</strong>
+                  <span class="helper" style="display: block; margin-top: 0.25rem; font-size: 0.8rem; line-height: 1.4; color: var(--on-surface); opacity: 0.8;">
+                    Na jednu dohodu o provedení práce (DPP) je pro jednoho zaměstnavatele povoleno odpracovat maximálně <strong>300 hodin za kalendářní rok</strong>.
+                  </span>
+                </div>
+              </div>
+
+              <!-- Sync Banner indicator -->
+              <div class="row padding round primary-border primary-text" id="syncBanner" style="background: rgba(0, 168, 150, 0.08); border: 1px solid var(--primary); border-radius: 16px; margin-bottom: 1.5rem; align-items: center; display: none;">
+                <i>sync</i>
+                <div class="max">
+                  <span class="font-bold" style="font-size: 0.85rem;">Hodiny synchronizovány z Výkazu hodin</span>
+                </div>
+              </div>
+
+              <div class="currency-switcher">
+                <div>
+                  <div class="label font-bold">Měna výpočtu</div>
+                  <div class="helper" id="currencyHelper">Zobrazení v Kč</div>
+                </div>
+                <div class="currency-options" role="group" aria-label="Měna výpočtu">
+                  <button class="small active" type="button" id="currencyCZK" onclick="setCurrency('CZK')">Kč</button>
+                  <button class="small" type="button" id="currencyEUR" onclick="setCurrency('EUR')">€</button>
+                </div>
+              </div>
+
+              <div class="space"></div>
+
+              <div class="grid">
+                <div class="s12 m6">
+                  <div class="field fill round">
+                    <input type="number" id="wage" value="150" min="0" oninput="calculate()">
+                    <label id="wageLabel">Hodinová mzda (Kč)</label>
+                  </div>
+                </div>
+                <div class="s12 m6">
+                  <div class="field fill round" id="hoursDayFieldContainer">
+                    <input type="number" id="hoursDay" value="6" min="0" oninput="calculate()">
+                    <label id="hoursDayLabel">Průměrně hodin denně</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space"></div>
+              <label class="bold font-medium" id="daysGroupLabel" style="display: block; margin-bottom: 0.5rem;">Pracovní dny v týdnu</label>
+              <div class="chip-group" id="daysGroup"></div>
+
+              <div class="space"></div>
+
+              <div class="grid">
+                <div class="s12 m6">
+                  <div class="field fill round">
+                    <input type="number" id="limitDPP" value="11999" min="0" oninput="calculate()">
+                    <label id="limitLabel">Limit pro odvody (Kč)</label>
+                    <span class="helper" id="limitHelper">Pro rok 2026</span>
+                  </div>
+                </div>
+                <div class="s12 m6">
+                  <div class="field fill round" id="vacationFieldContainer">
+                    <input type="number" id="vacation" value="0" min="0" oninput="calculate()">
+                    <label id="vacationLabel">Vybraná dovolená (hodin)</label>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </section>
+
+          <section id="priplatky">
+            <article>
+              <div class="article-header">
+                <i>more_time</i>
+                <h6 class="no-margin font-bold">Příplatky (zadané hodiny z celkových)</h6>
+              </div>
+
+              <div class="grid">
+                <div class="s12 m4">
+                  <div class="field fill round" id="hoursWeekendContainer">
+                    <input type="number" id="hoursWeekend" value="0" min="0" oninput="calculate()">
+                    <label id="hoursWeekendLabel">Víkend (h)</label>
+                    <span class="helper">+10 % příplatek</span>
+                  </div>
+                </div>
+                <div class="s12 m4">
+                  <div class="field fill round">
+                    <input type="number" id="hoursNight" value="0" min="0" oninput="calculate()">
+                    <label>Noc (h)</label>
+                    <span class="helper">+10 % příplatek</span>
+                  </div>
+                </div>
+                <div class="s12 m4">
+                  <div class="field fill round">
+                    <input type="number" id="hoursHoliday" value="0" min="0" oninput="calculate()">
+                    <label>Svátek (h)</label>
+                    <span class="helper">+100 % příplatek</span>
+                  </div>
+                </div>
+              </div>
+              <span class="helper" id="hoursBonusHelper">Součet hodin s příplatkem by neměl přesáhnout základní odpracované hodiny.</span>
+            </article>
+          </section>
+
+          <section id="dane">
+            <article>
+              <div class="article-header">
+                <i>percent</i>
+                <h6 class="no-margin font-bold">Daně a slevy</h6>
+              </div>
+
+              <label class="row cursor-pointer select-none">
+                <div class="switch">
+                  <input type="checkbox" id="pinkPaper" checked onchange="calculate()">
+                  <span></span>
+                </div>
+                <span id="pinkPaperLabel">Růžový papír (Prohlášení poplatníka - sleva 2 570 Kč)</span>
+              </label>
+              <div class="space"></div>
+              <label class="row cursor-pointer select-none">
+                <div class="switch">
+                  <input type="checkbox" id="ztp" onchange="calculate()">
+                  <span></span>
+                </div>
+                <span id="ztpLabel">Průkaz ZTP/P (sleva 235 Kč)</span>
+              </label>
+            </article>
+          </section>
+
+        </div>
+
+        <div class="s12 m12 l5">
+          <section id="rozpis">
+            <article style="background-color: var(--surface-container-high);">
+              <div class="article-header">
+                <i>receipt_long</i>
+                <h5 class="no-margin font-bold">Detailní rozpis mzdy</h5>
+              </div>
+
+              <table class="breakdown-table">
+                <tbody>
+                  <tr>
+                    <th>Základní odpracované hodiny</th>
+                    <td id="resBaseHours">0 h</td>
+                  </tr>
+                  <tr>
+                    <th>Základní odměna</th>
+                    <td id="resBasePay">0 Kč</td>
+                  </tr>
+                  <tr>
+                    <th>Příplatky (víkend, noc, svátek)</th>
+                    <td id="resBonuses">0 Kč</td>
+                  </tr>
+                  <tr>
+                    <th>Náhrada za dovolenou</th>
+                    <td id="resVacation">0 Kč</td>
+                  </tr>
+                  <tr style="border-bottom: 2px solid var(--outline);">
+                    <th class="text-addition font-bold">Hrubá mzda celkem</th>
+                    <td id="resGross" class="text-addition font-bold">0 Kč</td>
+                  </tr>
+
+                  <tr id="rowSocial" class="text-deduction">
+                    <th>Sociální pojištění (7,1 %)</th>
+                    <td id="resSocial">0 Kč</td>
+                  </tr>
+                  <tr id="rowHealth" class="text-deduction">
+                    <th>Zdravotní pojištění (4,5 %)</th>
+                    <td id="resHealth">0 Kč</td>
+                  </tr>
+
+                  <tr>
+                    <th>Základ daně (zaokr. na 100 Kč)</th>
+                    <td id="resTaxBase">0 Kč</td>
+                  </tr>
+                  <tr class="text-deduction">
+                    <th>Záloha na daň (15 %)</th>
+                    <td id="resTaxAdvance">0 Kč</td>
+                  </tr>
+                  <tr class="text-success">
+                    <th>Uplatněné slevy na dani</th>
+                    <td id="resDiscounts">0 Kč</td>
+                  </tr>
+                  <tr>
+                    <th>Skutečně odvedená daň</th>
+                    <td id="resTaxFinal" class="text-deduction">0 Kč</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="space"></div>
+              <div class="primary-container" id="limitWarning">
+                <i>info</i>
+                <span id="limitText">Hrubá mzda je pod limitem. Neplatíte pojištění.</span>
+              </div>
+              <div class="space"></div>
+
+              <div class="final-result">
+                <span class="label font-bold">Čistá mzda</span>
+                <span class="value" id="resNet">0 Kč</span>
+              </div>
+            </article>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: CALENDAR EVIDENCE VIEW -->
+    <div id="page-calendar" style="display: none;">
+      <div class="page-header">
+        <div>
+          <h4 class="no-margin font-bold">Výkaz odpracovaných hodin</h4>
+          <div class="subtitle opacity-75">Detailní evidence po týdnech pro DPP (2026)</div>
+        </div>
+        <div>
+          <button class="border error-text round" type="button" onclick="resetCalendar()" title="Vynulovat kalendář" aria-label="Vynulovat kalendář">
+            <i>restart_alt</i> Vynulovat
+          </button>
+        </div>
+      </div>
+
+      <div class="study-overview" aria-label="Přehled výkazu">
+        <div class="study-stat">
+          <div class="label"><i>schedule</i> Celkem odpracováno</div>
+          <div class="value text-addition" id="calTotalHours">0 h</div>
+        </div>
+        <div class="study-stat">
+          <div class="label"><i>beach_access</i> Čerpaná dovolená</div>
+          <div class="value text-success" id="calTotalVacation">0 h</div>
+        </div>
+        <div class="study-stat">
+          <div class="label"><i>payments</i> Odhadovaný výdělek</div>
+          <div class="value font-bold" id="calTotalEarnings" style="color: var(--primary);">0 Kč</div>
+        </div>
+      </div>
+
+      <article style="margin-bottom: 1.5rem;" class="surface-container-low">
+        <div class="row no-wrap">
+          <div class="max">
+            <h6 class="no-margin font-bold" style="font-size: 1.1rem;">Synchronizovat s kalkulačkou</h6>
+            <div class="helper">Automaticky přenášet odpracované hodiny, víkendy a dovolenou do podrobného výpočtu mzdy.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="syncFromCalendar" onchange="toggleSync(this.checked)">
+            <span></span>
+          </label>
+        </div>
+      </article>
+
+      <div class="year-grid-container">
+        <div class="year-grid" id="yearGrid"></div>
+        <div id="hover-day-info" class="helper font-mono text-center" style="margin-top: 0.5rem; min-height: 1.25rem;">
+          Kliknutím na čtvereček skočíte na konkrétní týden.
+        </div>
+      </div>
+
+      <div class="row align-center justify-between" style="background-color: var(--surface-container-high); padding: 0.75rem 1rem; border-radius: 18px; margin-bottom: 1.25rem; gap: 0.5rem;">
+        <button class="border circle" type="button" onclick="prevWeek()" title="Předchozí týden" aria-label="Předchozí týden">
+          <i>chevron_left</i>
+        </button>
+        
+        <div class="field label border round no-margin max" style="min-width: 14rem;">
+          <select id="weekSelect" onchange="goToWeek(this.value)">
+            <!-- Options populated dynamically -->
+          </select>
+          <label>Zvolte týden k zápisu</label>
+          <i>arrow_drop_down</i>
+        </div>
+        
+        <button class="border circle" type="button" onclick="nextWeek()" title="Následující týden" aria-label="Následující týden">
+          <i>chevron_right</i>
+        </button>
+      </div>
+
+      <div id="week-days-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'dpp-kalkulacka-state-v3';
+    const CALENDAR_STORAGE_KEY = 'dpp-calendar-days-v3';
+    const CZK_PER_EUR = 25;
+    const moneyInputIds = ['wage', 'limitDPP'];
+    const numericInputIds = ['wage', 'hoursDay', 'limitDPP', 'vacation', 'hoursWeekend', 'hoursNight', 'hoursHoliday'];
+    const switchIds = ['pinkPaper', 'ztp'];
+    const WEEKDAYS = ['Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota', 'Neděle'];
+
+    let currentCurrency = 'CZK';
+    let currentAccent = 'teal';
+    let isRestoring = true;
+    let syncEnabled = false;
+    let currentWeekIndex = 0;
+    let calendarDays = []; // 365 objects: { hours: number, type: 'free'|'work'|'vacation' }
+
+    const accentPalettes = {
+      teal: {
+        light: {
+          primary: '#006a60',
+          onPrimary: '#ffffff',
+          primaryContainer: '#77f8e7',
+          onPrimaryContainer: '#00201c',
+          secondary: '#4a635f',
+          secondaryContainer: '#cce8e1',
+          onSecondaryContainer: '#05201c',
+          tertiary: '#456179'
+        },
+        dark: {
+          primary: '#58dbc9',
+          onPrimary: '#003731',
+          primaryContainer: '#005048',
+          onPrimaryContainer: '#77f8e7',
+          secondary: '#b0ccc6',
+          secondaryContainer: '#324b47',
+          onSecondaryContainer: '#cce8e1',
+          tertiary: '#adc9e6'
+        }
+      },
+      blue: {
+        light: {
+          primary: '#0061a4',
+          onPrimary: '#ffffff',
+          primaryContainer: '#d1e4ff',
+          onPrimaryContainer: '#001d36',
+          secondary: '#535f70',
+          secondaryContainer: '#d7e3f7',
+          onSecondaryContainer: '#101c2b',
+          tertiary: '#6b5778'
+        },
+        dark: {
+          primary: '#9ecaff',
+          onPrimary: '#003258',
+          primaryContainer: '#00497d',
+          onPrimaryContainer: '#d1e4ff',
+          secondary: '#bbc7db',
+          secondaryContainer: '#3b4858',
+          onSecondaryContainer: '#d7e3f7',
+          tertiary: '#d6bee4'
+        }
+      },
+      green: {
+        light: {
+          primary: '#386a20',
+          onPrimary: '#ffffff',
+          primaryContainer: '#b8f397',
+          onPrimaryContainer: '#072100',
+          secondary: '#55624c',
+          secondaryContainer: '#d9e7cb',
+          onSecondaryContainer: '#131f0d',
+          tertiary: '#386666'
+        },
+        dark: {
+          primary: '#9cda7e',
+          onPrimary: '#0d3900',
+          primaryContainer: '#215107',
+          onPrimaryContainer: '#b8f397',
+          secondary: '#bdcbb0',
+          secondaryContainer: '#3e4a36',
+          onSecondaryContainer: '#d9e7cb',
+          tertiary: '#a0caca'
+        }
+      },
+      rose: {
+        light: {
+          primary: '#9b405f',
+          onPrimary: '#ffffff',
+          primaryContainer: '#ffd9e2',
+          onPrimaryContainer: '#3f001b',
+          secondary: '#74565f',
+          secondaryContainer: '#ffd9e2',
+          onSecondaryContainer: '#2b151c',
+          tertiary: '#7c5635'
+        },
+        dark: {
+          primary: '#ffb1c8',
+          onPrimary: '#5f1131',
+          primaryContainer: '#7d2947',
+          onPrimaryContainer: '#ffd9e2',
+          secondary: '#e3bdc7',
+          secondaryContainer: '#5a3f47',
+          onSecondaryContainer: '#ffd9e2',
+          tertiary: '#efbd94'
+        }
+      }
+    };
+
+    function getMode() {
+      return document.body.classList.contains('dark') ? 'dark' : 'light';
+    }
+
+    function applyAccent(accent = currentAccent) {
+      currentAccent = accentPalettes[accent] ? accent : 'teal';
+      const palette = accentPalettes[currentAccent][getMode()];
+      const target = document.body.style;
+      target.setProperty('--primary', palette.primary);
+      target.setProperty('--on-primary', palette.onPrimary);
+      target.setProperty('--primary-container', palette.primaryContainer);
+      target.setProperty('--on-primary-container', palette.onPrimaryContainer);
+      target.setProperty('--secondary', palette.secondary);
+      target.setProperty('--secondary-container', palette.secondaryContainer);
+      target.setProperty('--on-secondary-container', palette.onSecondaryContainer);
+      target.setProperty('--tertiary', palette.tertiary);
+      document.querySelectorAll('.accent-swatch').forEach(button => {
+        button.classList.toggle('active', button.dataset.accent === currentAccent);
+      });
+      renderYearGrid();
+    }
+
+    function setAccent(accent) {
+      currentAccent = accent;
+      applyAccent(currentAccent);
+      saveState();
+    }
+
+    function applyTheme(mode) {
+      const nextMode = mode === 'light' ? 'light' : 'dark';
+      if (typeof ui === 'function') {
+        ui('mode', nextMode);
+      } else {
+        document.body.classList.toggle('dark', nextMode === 'dark');
+        document.body.classList.toggle('light', nextMode === 'light');
+      }
+      const icon = nextMode === 'dark' ? 'light_mode' : 'dark_mode';
+      const iconEl = document.getElementById('theme-icon-control');
+      if (iconEl) iconEl.innerText = icon;
+      applyAccent(currentAccent);
+    }
+
+    function toggleTheme() {
+      applyTheme(getMode() === 'dark' ? 'light' : 'dark');
+      saveState();
+    }
+
+    // --- State Persistence ---
+    function getStoredState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function saveState() {
+      if (isRestoring) return;
+      const state = {
+        mode: getMode(),
+        accent: currentAccent,
+        currency: currentCurrency,
+        inputs: {},
+        switches: {},
+        days: {}
+      };
+      numericInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state.inputs[id] = el.value;
+      });
+      switchIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) state.switches[id] = el.checked;
+      });
+      daysArr.forEach(day => {
+        const el = document.getElementById(day.id);
+        if (el) state.days[day.id] = el.checked;
+      });
+      
+      // Save sync switch state
+      state.switches.syncFromCalendar = syncEnabled;
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function restoreState() {
+      const state = getStoredState();
+      currentAccent = state.accent || 'teal';
+      currentCurrency = state.currency === 'EUR' ? 'EUR' : 'CZK';
+      applyTheme(state.mode || getMode());
+
+      Object.entries(state.inputs || {}).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = value;
+      });
+      Object.entries(state.switches || {}).forEach(([id, checked]) => {
+        if (id === 'syncFromCalendar') {
+          syncEnabled = !!checked;
+          const syncSwitch = document.getElementById('syncFromCalendar');
+          if (syncSwitch) syncSwitch.checked = syncEnabled;
+        } else {
+          const el = document.getElementById(id);
+          if (el) el.checked = !!checked;
+        }
+      });
+      Object.entries(state.days || {}).forEach(([id, checked]) => {
+        const el = document.getElementById(id);
+        if (el) el.checked = !!checked;
+      });
+      moneyInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.step = currentCurrency === 'EUR' ? '0.01' : '1';
+      });
+    }
+
+    // --- Calendar Persistence & Operations ---
+    function initCalendar() {
+      const stored = localStorage.getItem(CALENDAR_STORAGE_KEY);
+      if (stored) {
+        try {
+          calendarDays = JSON.parse(stored);
+          if (calendarDays.length === 365) return;
+        } catch (e) {}
+      }
+      calendarDays = [];
+      for (let i = 0; i < 365; i++) {
+        calendarDays.push({ hours: 0, type: 'free' });
+      }
+      saveCalendarState();
+    }
+
+    function saveCalendarState() {
+      localStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(calendarDays));
+    }
+
+    function getDayRangeString(weekIndex) {
+      const start = new Date(2026, 0, 1 + weekIndex * 7);
+      const end = new Date(2026, 0, 1 + weekIndex * 7 + 6);
+      const startStr = start.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' });
+      const endStr = end.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' });
+      return `${startStr} – ${endStr}`;
+    }
+
+    function renderCalendar() {
+      const select = document.getElementById('weekSelect');
+      if (select.options.length === 0) {
+        for (let i = 0; i < 52; i++) {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.innerText = `Týden ${i + 1} (${getDayRangeString(i)})`;
+          select.appendChild(opt);
+        }
+        const optExtra = document.createElement('option');
+        optExtra.value = 52;
+        optExtra.innerText = `Den 365 (Extra den)`;
+        select.appendChild(optExtra);
+      }
+      
+      select.value = currentWeekIndex;
+      updateCalendarStats();
+      renderYearGrid();
+      renderActiveWeekDays();
+    }
+
+    function updateCalendarStats() {
+      let totalWorked = 0;
+      let totalVacation = 0;
+      calendarDays.forEach(day => {
+        if (day.type === 'work') totalWorked += day.hours;
+        if (day.type === 'vacation') totalVacation += day.hours;
+      });
+
+      const wage = moneyToCzk(getVal('wage'));
+      const totalEarnings = totalWorked * wage;
+
+      document.getElementById('calTotalHours').innerText = `${totalWorked.toLocaleString('cs-CZ')} h`;
+      document.getElementById('calTotalVacation').innerText = `${totalVacation.toLocaleString('cs-CZ')} h`;
+      document.getElementById('calTotalEarnings').innerText = fmt(totalEarnings);
+    }
+
+    function renderYearGrid() {
+      const grid = document.getElementById('yearGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      calendarDays.forEach((day, index) => {
+        const cell = document.createElement('div');
+        cell.className = 'year-grid-cell';
+
+        if (day.type === 'vacation') {
+          cell.style.backgroundColor = 'var(--tertiary)';
+          cell.style.opacity = '1';
+        } else if (day.type === 'work' && day.hours > 0) {
+          cell.style.backgroundColor = 'var(--primary)';
+          if (day.hours < 4) {
+            cell.style.opacity = '0.35';
+          } else if (day.hours <= 8) {
+            cell.style.opacity = '0.65';
+          } else {
+            cell.style.opacity = '1';
+          }
+        } else {
+          cell.style.backgroundColor = 'var(--outline-variant)';
+          cell.style.opacity = '0.25';
+        }
+
+        cell.addEventListener('mouseenter', () => {
+          const d = new Date(2026, 0, 1 + index);
+          const dStr = d.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long', weekday: 'short' });
+          const hoursStr = day.type === 'vacation'
+            ? `Dovolená (${day.hours} h)`
+            : (day.hours > 0 ? `Odpracováno ${day.hours} h` : 'Volno');
+          document.getElementById('hover-day-info').innerText = `${dStr}: ${hoursStr}`;
+        });
+
+        cell.addEventListener('mouseleave', () => {
+          document.getElementById('hover-day-info').innerText = 'Kliknutím na čtvereček skočíte na konkrétní týden.';
+        });
+
+        cell.addEventListener('click', () => {
+          const targetWeek = Math.min(52, Math.floor(index / 7));
+          goToWeek(targetWeek);
+        });
+
+        grid.appendChild(cell);
+      });
+    }
+
+    function renderActiveWeekDays() {
+      const container = document.getElementById('week-days-container');
+      container.innerHTML = '';
+
+      const isExtraDay = currentWeekIndex === 52;
+      const daysInThisView = isExtraDay ? 1 : 7;
+
+      for (let d = 0; d < daysInThisView; d++) {
+        const dayIndex = isExtraDay ? 364 : currentWeekIndex * 7 + d;
+        const dayData = calendarDays[dayIndex] || { hours: 0, type: 'free' };
+
+        const dateObj = new Date(2026, 0, 1 + dayIndex);
+        const dateStr = dateObj.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'long' });
+        const weekdayName = WEEKDAYS[dateObj.getDay() === 0 ? 6 : dateObj.getDay() - 1];
+        const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;
+
+        let statusLabel = 'Volno';
+        let badgeClass = 'border';
+        if (dayData.type === 'work' && dayData.hours > 0) {
+          statusLabel = `Práce: ${dayData.hours} h`;
+          badgeClass = 'primary';
+        } else if (dayData.type === 'vacation') {
+          statusLabel = `Dovolená: ${dayData.hours} h`;
+          badgeClass = 'tertiary';
+        }
+
+        const dayCard = document.createElement('div');
+        dayCard.className = `row padding round border hover ${isWeekend ? 'surface-container-low' : 'surface'}`;
+        dayCard.style.cssText = "margin-bottom: 0.75rem; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;";
+
+        dayCard.innerHTML = `
+          <div class="max">
+            <div class="row gap no-wrap align-center">
+              <span class="font-bold text-ellipsis" style="font-size: 1.05rem; ${isWeekend ? 'color: var(--secondary);' : ''}">${weekdayName} ${dateStr}</span>
+              <span class="badge ${badgeClass}">${statusLabel}</span>
+            </div>
+          </div>
+          
+          <div class="row gap align-center">
+            <div class="chip-group no-margin">
+              <button class="chip small ${dayData.type === 'free' ? 'primary' : 'border'}" type="button" onclick="setDayValue(${dayIndex}, 0, 'free')">Volno</button>
+              <button class="chip small ${dayData.type === 'work' && dayData.hours === 4 ? 'primary' : 'border'}" type="button" onclick="setDayValue(${dayIndex}, 4, 'work')">4h</button>
+              <button class="chip small ${dayData.type === 'work' && dayData.hours === 8 ? 'primary' : 'border'}" type="button" onclick="setDayValue(${dayIndex}, 8, 'work')">8h</button>
+              <button class="chip small ${dayData.type === 'vacation' ? 'tertiary' : 'border'}" type="button" onclick="setDayValue(${dayIndex}, 8, 'vacation')">Dovolená</button>
+            </div>
+            <div class="field label border round no-margin" style="width: 75px;">
+              <input type="number" min="0" max="24" step="0.5" value="${dayData.hours}" oninput="setDayHours(${dayIndex}, this.value)" style="height: 2.25rem; font-size: 0.9rem;">
+              <label>Hodiny</label>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(dayCard);
+      }
+    }
+
+    function setDayValue(dayIndex, hours, type) {
+      calendarDays[dayIndex] = { hours: parseFloat(hours) || 0, type };
+      saveCalendarState();
+      updateCalendarStats();
+      renderActiveWeekDays();
+      renderYearGrid();
+
+      if (syncEnabled) {
+        calculate();
+      }
+    }
+
+    function setDayHours(dayIndex, val) {
+      const hours = parseFloat(val);
+      if (isNaN(hours) || hours < 0) return;
+
+      const currentType = calendarDays[dayIndex].type === 'free' ? 'work' : calendarDays[dayIndex].type;
+      calendarDays[dayIndex].hours = hours;
+      if (hours === 0) {
+        calendarDays[dayIndex].type = 'free';
+      } else {
+        calendarDays[dayIndex].type = currentType;
+      }
+
+      saveCalendarState();
+      updateCalendarStats();
+      renderYearGrid();
+
+      if (syncEnabled) {
+        calculate();
+      }
+    }
+
+    function prevWeek() {
+      if (currentWeekIndex > 0) {
+        goToWeek(currentWeekIndex - 1);
+      }
+    }
+
+    function nextWeek() {
+      if (currentWeekIndex < 52) {
+        goToWeek(currentWeekIndex + 1);
+      }
+    }
+
+    function goToWeek(weekIndex) {
+      currentWeekIndex = parseInt(weekIndex);
+      document.getElementById('weekSelect').value = currentWeekIndex;
+      renderActiveWeekDays();
+    }
+
+    function resetCalendar() {
+      if (confirm('Opravdu chcete vymazat všechna zapsaná data v kalendáři?')) {
+        calendarDays = [];
+        for (let i = 0; i < 365; i++) {
+          calendarDays.push({ hours: 0, type: 'free' });
+        }
+        saveCalendarState();
+        updateCalendarStats();
+        renderCalendar();
+        if (syncEnabled) {
+          calculate();
+        }
+      }
+    }
+
+    // --- Routing & Tab switching ---
+    function handleRoute() {
+      const hash = window.location.hash || '#home';
+
+      if (hash === '#vykaz') {
+        document.getElementById('page-calculator').style.display = 'none';
+        document.getElementById('page-calendar').style.display = 'block';
+
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-section') === 'vykaz');
+        });
+        
+        renderCalendar();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('page-calculator').style.display = 'block';
+        document.getElementById('page-calendar').style.display = 'none';
+
+        const sectionId = hash.substring(1);
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('data-section') === sectionId);
+        });
+
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+
+    // --- Dynamic synchronization logic ---
+    function toggleSync(enabled) {
+      syncEnabled = enabled;
+      saveState();
+
+      // UI state toggles
+      const inputsToToggle = ['hoursDay', 'vacation'];
+      inputsToToggle.forEach(id => {
+        const el = document.getElementById(id);
+        const container = document.getElementById(id + 'FieldContainer');
+        if (el) {
+          el.disabled = enabled;
+          if (enabled) {
+            container.classList.add('disabled');
+            container.style.opacity = '0.5';
+          } else {
+            container.classList.remove('disabled');
+            container.style.opacity = '1';
+          }
+        }
+      });
+
+      // Disable weekday chips
+      document.querySelectorAll('.chip-checkbox').forEach(el => {
+        el.disabled = enabled;
+        if (enabled) {
+          el.parentElement.style.opacity = '0.5';
+          el.parentElement.style.pointerEvents = 'none';
+        } else {
+          el.parentElement.style.opacity = '1';
+          el.parentElement.style.pointerEvents = 'auto';
+        }
+      });
+
+      document.getElementById('syncBanner').style.display = enabled ? 'flex' : 'none';
+      document.getElementById('daysGroupLabel').style.opacity = enabled ? '0.5' : '1';
+
+      calculate();
+    }
+
+    // --- Nav Links Spy ---
+    const navLinks = document.querySelectorAll('nav a[data-section]');
+    const sections = document.querySelectorAll('main section[id]');
+    const spyObserver = new IntersectionObserver((entries) => {
+      // Only spy when calendar page is hidden
+      if (document.getElementById('page-calendar').style.display === 'block') return;
+      
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.dataset.section === entry.target.id);
+          });
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    sections.forEach(s => spyObserver.observe(s));
+
+    window.addEventListener('hashchange', handleRoute);
+
+    // --- Render weekday chips in calculator ---
+    const daysArr = [
+      { id: 'd1', name: 'Po' }, { id: 'd2', name: 'Út' }, { id: 'd3', name: 'St' },
+      { id: 'd4', name: 'Čt' }, { id: 'd5', name: 'Pá' }, { id: 'd6', name: 'So' }, { id: 'd7', name: 'Ne' }
+    ];
+
+    const daysGroup = document.getElementById('daysGroup');
+    daysArr.forEach(d => {
+      const wrapper = document.createElement('div');
+
+      const inp = document.createElement('input');
+      inp.type = 'checkbox';
+      inp.id = d.id;
+      inp.className = 'chip-checkbox';
+      if (d.id !== 'd6' && d.id !== 'd7') inp.checked = true;
+      inp.onchange = calculate;
+
+      const lbl = document.createElement('label');
+      lbl.htmlFor = d.id;
+      lbl.className = 'chip chip-label';
+      lbl.innerText = d.name;
+
+      wrapper.appendChild(inp);
+      wrapper.appendChild(lbl);
+      daysGroup.appendChild(wrapper);
+    });
+
+    document.querySelectorAll('.accent-swatch').forEach(button => {
+      button.addEventListener('click', () => setAccent(button.dataset.accent));
+    });
+
+    // Close details panel when clicking outside
+    document.addEventListener('click', function(e) {
+      const details = document.querySelector('.settings-menu');
+      if (details && details.open && !details.contains(e.target)) {
+        details.open = false;
+      }
+    });
+
+    // --- Helpers ---
+    function getVal(id) {
+      const el = document.getElementById(id);
+      if (!el) return 0;
+      const raw = parseFloat(el.value);
+      if (!isFinite(raw) || raw < 0) return 0;
+      return raw;
+    }
+
+    function moneyToCzk(value) {
+      return currentCurrency === 'EUR' ? value * CZK_PER_EUR : value;
+    }
+
+    function czkToDisplay(value) {
+      return currentCurrency === 'EUR' ? value / CZK_PER_EUR : value;
+    }
+
+    function moneyToCzkForCurrency(value, currency) {
+      return currency === 'EUR' ? value * CZK_PER_EUR : value;
+    }
+
+    function czkToCurrency(value, currency) {
+      return currency === 'EUR' ? value / CZK_PER_EUR : value;
+    }
+
+    function formatMoneyInput(value, currency = currentCurrency) {
+      const displayValue = currency === 'EUR'
+        ? Math.round(value * 100) / 100
+        : Math.round(value);
+      return displayValue.toString();
+    }
+
+    function fmt(num) {
+      if (!isFinite(num)) return currentCurrency === 'EUR' ? '0 €' : '0 Kč';
+      const displayNum = czkToDisplay(num);
+      if (currentCurrency === 'EUR') {
+        return displayNum.toLocaleString('cs-CZ', {
+          style: 'currency',
+          currency: 'EUR',
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        });
+      }
+      return Math.round(displayNum).toLocaleString('cs-CZ') + ' Kč';
+    }
+
+    function setCurrency(nextCurrency) {
+      if (nextCurrency === currentCurrency) return;
+
+      const previousCurrency = currentCurrency;
+      ['wage', 'limitDPP'].forEach(id => {
+        const input = document.getElementById(id);
+        const valueInCzk = moneyToCzkForCurrency(getVal(id), previousCurrency);
+        input.value = formatMoneyInput(czkToCurrency(valueInCzk, nextCurrency), nextCurrency);
+        input.step = nextCurrency === 'EUR' ? '0.01' : '1';
+      });
+
+      currentCurrency = nextCurrency;
+      updateCurrencyUi();
+      calculate();
+    }
+
+    function updateCurrencyUi() {
+      const symbol = currentCurrency === 'EUR' ? '€' : 'Kč';
+      document.getElementById('currencyCZK').classList.toggle('active', currentCurrency === 'CZK');
+      document.getElementById('currencyEUR').classList.toggle('active', currentCurrency === 'EUR');
+      document.getElementById('wageLabel').innerText = `Hodinová mzda (${symbol})`;
+      document.getElementById('limitLabel').innerText = `Limit pro odvody (${symbol})`;
+      document.getElementById('limitHelper').innerText = currentCurrency === 'EUR'
+        ? `Pro rok 2026, orientačně ${fmt(11999)}`
+        : 'Pro rok 2026';
+      document.getElementById('currencyHelper').innerText = currentCurrency === 'EUR'
+        ? `Orientační kurz ${CZK_PER_EUR} Kč / 1 €`
+        : 'Zobrazení v Kč';
+      document.getElementById('pinkPaperLabel').innerText = `Růžový papír (Prohlášení poplatníka - sleva ${fmt(2570)})`;
+      document.getElementById('ztpLabel').innerText = `Průkaz ZTP/P (sleva ${fmt(235)})`;
+      
+      // Update stats cards currency display dynamically
+      calculate();
+      updateCalendarStats();
+    }
+
+    // --- Main Calculation Engine ---
+    function calculate() {
+      const wage = moneyToCzk(getVal('wage'));
+      const hoursDay = getVal('hoursDay');
+      const limitDPP = moneyToCzk(getVal('limitDPP'));
+
+      let baseHours = 0;
+      let hVacation = 0;
+      let hWeekend = 0;
+
+      if (syncEnabled) {
+        let totalWorked = 0;
+        let totalVacation = 0;
+        let weekendWorked = 0;
+
+        calendarDays.forEach((day, index) => {
+          if (day.type === 'work') {
+            totalWorked += day.hours;
+            
+            // Determine if weekend in 2026 calendar dates (0 = Sunday, 6 = Saturday)
+            const dateObj = new Date(2026, 0, 1 + index);
+            const dayOfWeek = dateObj.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+              weekendWorked += day.hours;
+            }
+          }
+          if (day.type === 'vacation') {
+            totalVacation += day.hours;
+          }
+        });
+
+        baseHours = totalWorked;
+        hVacation = totalVacation;
+        hWeekend = weekendWorked;
+
+        // Visual locks updates
+        const vacInput = document.getElementById('vacation');
+        if (vacInput) vacInput.value = hVacation;
+        
+        const weekendInput = document.getElementById('hoursWeekend');
+        if (weekendInput) {
+          weekendInput.value = hWeekend;
+          weekendInput.disabled = true;
+          document.getElementById('hoursWeekendContainer').classList.add('disabled');
+          document.getElementById('hoursWeekendContainer').style.opacity = '0.5';
+          document.getElementById('hoursWeekendLabel').innerText = `Víkend (h) [Synch.]`;
+        }
+      } else {
+        let activeDaysPerWeek = 0;
+        daysArr.forEach(d => {
+          const el = document.getElementById(d.id);
+          if (el && el.checked) activeDaysPerWeek++;
+        });
+        const monthlyDays = Math.round(activeDaysPerWeek * 4.345);
+
+        baseHours = monthlyDays * hoursDay;
+        hVacation = getVal('vacation');
+        hWeekend = Math.min(getVal('hoursWeekend'), baseHours);
+
+        // Unlock weekend hours input
+        const weekendInput = document.getElementById('hoursWeekend');
+        if (weekendInput && weekendInput.disabled) {
+          weekendInput.disabled = false;
+          document.getElementById('hoursWeekendContainer').classList.remove('disabled');
+          document.getElementById('hoursWeekendContainer').style.opacity = '1';
+          document.getElementById('hoursWeekendLabel').innerText = `Víkend (h)`;
+        }
+      }
+
+      const basePay = baseHours * wage;
+
+      // Bonus calculations
+      const hNight = Math.min(getVal('hoursNight'), baseHours);
+      const hHoliday = Math.min(getVal('hoursHoliday'), baseHours);
+
+      const bonusWeekend = hWeekend * (wage * 0.10);
+      const bonusNight = hNight * (wage * 0.10);
+      const bonusHoliday = hHoliday * (wage * 1.00);
+      const totalBonuses = bonusWeekend + bonusNight + bonusHoliday;
+
+      const payVacation = hVacation * wage;
+      const gross = basePay + totalBonuses + payVacation;
+
+      let social = 0;
+      let health = 0;
+      const overLimit = gross > limitDPP && limitDPP >= 0;
+
+      if (overLimit) {
+        social = gross * 0.071;
+        health = gross * 0.045;
+      }
+
+      const taxBase = gross > 0 ? Math.ceil(gross / 100) * 100 : 0;
+      const taxAdvance = taxBase * 0.15;
+
+      let discounts = 0;
+      if (document.getElementById('pinkPaper').checked) discounts += 2570;
+      if (document.getElementById('ztp').checked) discounts += 235;
+
+      let finalTax = taxAdvance - discounts;
+      if (finalTax < 0) finalTax = 0;
+
+      let net = gross - social - health - finalTax;
+      if (net < 0) net = 0;
+
+      // Render breakdown elements
+      document.getElementById('resBaseHours').innerText = `${baseHours.toLocaleString('cs-CZ')} h`;
+      document.getElementById('resBasePay').innerText = fmt(basePay);
+      document.getElementById('resBonuses').innerText = fmt(totalBonuses);
+      document.getElementById('resVacation').innerText = fmt(payVacation);
+      document.getElementById('resGross').innerText = fmt(gross);
+
+      const rSoc = document.getElementById('rowSocial');
+      const rHea = document.getElementById('rowHealth');
+
+      if (overLimit) {
+        rSoc.style.display = 'table-row';
+        rHea.style.display = 'table-row';
+        document.getElementById('resSocial').innerText = '- ' + fmt(social);
+        document.getElementById('resHealth').innerText = '- ' + fmt(health);
+      } else {
+        rSoc.style.display = 'none';
+        rHea.style.display = 'none';
+      }
+
+      document.getElementById('resTaxBase').innerText = fmt(taxBase);
+      document.getElementById('resTaxAdvance').innerText = '- ' + fmt(taxAdvance);
+      document.getElementById('resDiscounts').innerText = '+ ' + fmt(discounts);
+      document.getElementById('resTaxFinal').innerText = '- ' + fmt(finalTax);
+      document.getElementById('resNet').innerText = fmt(net);
+      
+      // Update top highlights
+      document.getElementById('summaryHours').innerText = `${baseHours.toLocaleString('cs-CZ')} h`;
+      document.getElementById('summaryGross').innerText = fmt(gross);
+      document.getElementById('summaryNet').innerText = fmt(net);
+
+      // Warning styling
+      const limitBox = document.getElementById('limitWarning');
+      const limitText = document.getElementById('limitText');
+
+      if (overLimit) {
+        limitBox.classList.remove('primary-container');
+        limitBox.classList.add('error-container');
+        limitText.innerText = `Překročen limit ${fmt(limitDPP)}! Strhává se sociální a zdravotní pojištění.`;
+      } else {
+        limitBox.classList.remove('error-container');
+        limitBox.classList.add('primary-container');
+        limitText.innerText = `Výdělek je pod stanoveným limitem ${fmt(limitDPP)}. Výplata je bez odvodů.`;
+      }
+      
+      saveState();
+    }
+
+    // --- App bootstrap ---
+    window.addEventListener('DOMContentLoaded', () => {
+      initCalendar();
+      restoreState();
+      
+      isRestoring = false;
+      updateCurrencyUi();
+      
+      // Trigger dynamic synchronization state
+      toggleSync(syncEnabled);
+      
+      handleRoute();
+    });
+  </script>
+</body>
+</html>
